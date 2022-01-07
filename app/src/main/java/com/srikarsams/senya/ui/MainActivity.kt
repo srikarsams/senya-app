@@ -1,7 +1,8 @@
-package com.srikarsams.senya
+package com.srikarsams.senya.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.srikarsams.senya.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
