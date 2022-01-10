@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_attractionDetailFragment"
-            app:destination="@id/attractionDetailFragment" />
+            app:destination="@id/attractionDetailFragment"
+            app:enterAnim="@anim/fragment_slide_in_right"
+            app:exitAnim="@anim/fragment_slide_out_left"
+            app:popEnterAnim="@anim/fragment_slide_in_right"
+            app:popExitAnim="@anim/fragment_slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/attractionDetailFragment"
@@ -21,6 +25,8 @@
         tools:layout="@layout/fragment_attraction_detail">
         <argument
             android:name="attractionId"
-            app:argType="string" />
+            app:argType="string"
+            app:enterAnim="@anim/fragment_slide_in_right"
+            app:exitAnim="@anim/fragment_slide_out_left"/>
     </fragment>
 </navigation>
