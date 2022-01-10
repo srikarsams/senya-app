@@ -10,6 +10,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingBottom="24dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:listitem="@layout/view_holder_attraction"
+        android:clipToPadding="false"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

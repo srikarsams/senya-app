@@ -3,9 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_arrow_forward_24.xml" value="0.3338541666666667" />
+        <entry key="app/src/main/res/drawable/ic_flight_24.xml" value="0.3338541666666667" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30364583333333334" />
         <entry key="app/src/main/res/layout/fragment_attraction_detail.xml" value="0.3177083333333333" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.26313405797101447" />
+        <entry key="app/src/main/res/layout/view_holder_attraction.xml" value="0.26313405797101447" />
       </map>
     </option>
   </component>
