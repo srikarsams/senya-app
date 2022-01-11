@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
-    fun parseAttractions(): ArrayList<Attraction> {
+    private fun parseAttractions(): ArrayList<Attraction> {
         val textFromFile =
             resources.openRawResource(R.raw.croatia).bufferedReader().use { it.readText() }
 
