@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import com.srikarsams.senya.R
@@ -42,7 +43,11 @@ class AttractionDetailFragment : BaseFragment() {
         binding.monthsToVisitTextView.text = attraction.months_to_visit
         binding.numberOfFactsTextView.text = "${attraction.facts.size.toString()} Facts"
         binding.numberOfFactsTextView.setOnClickListener {
-
+            val message: String = "\u2022 ${attraction.facts.joinToString("\n\n\u2022 ")}"
+            AlertDialog.Builder(requireContext()).setTitle("${attraction.title} facts")
+                .setMessage(message).setPositiveButton("Okay") { dialog, _ ->
+                    dialog.dismiss()
+                }.show()
         }
     }
 
