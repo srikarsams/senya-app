@@ -8,16 +8,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import com.srikarsams.senya.R
+import com.srikarsams.senya.data.Attraction
 import com.srikarsams.senya.databinding.FragmentAttractionDetailBinding
 
 class AttractionDetailFragment : BaseFragment() {
     private var _binding: FragmentAttractionDetailBinding? = null
     private val binding get() = _binding!!
-
-    private val safeArgs: AttractionDetailFragmentArgs by navArgs()
-    private val attraction by lazy {
-        attractions.find { it.id == safeArgs.attractionId }!!
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,18 +32,20 @@ class AttractionDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.titleTextView.text = attraction.title
-        Picasso.get().load(attraction.image_urls[0]).into(binding.headerImageView)
-        binding.descriptionTextView.text =
-            attraction.description
-        binding.monthsToVisitTextView.text = attraction.months_to_visit
-        binding.numberOfFactsTextView.text = "${attraction.facts.size.toString()} Facts"
-        binding.numberOfFactsTextView.setOnClickListener {
-            val message: String = "\u2022 ${attraction.facts.joinToString("\n\n\u2022 ")}"
-            AlertDialog.Builder(requireContext()).setTitle("${attraction.title} facts")
-                .setMessage(message).setPositiveButton("Okay") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
+        activityViewModel.selectedAttractionLiveData.observe(viewLifecycleOwner) { attraction ->
+            binding.titleTextView.text = attraction.title
+            Picasso.get().load(attraction.image_urls[0]).into(binding.headerImageView)
+            binding.descriptionTextView.text =
+                attraction.description
+            binding.monthsToVisitTextView.text = attraction.months_to_visit
+            binding.numberOfFactsTextView.text = "${attraction.facts.size.toString()} Facts"
+            binding.numberOfFactsTextView.setOnClickListener {
+                val message = "\u2022 ${attraction.facts.joinToString("\n\n\u2022 ")}"
+                AlertDialog.Builder(requireContext()).setTitle("${attraction.title} facts")
+                    .setMessage(message).setPositiveButton("Okay") { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
+            }
         }
     }
 
@@ -58,11 +56,8 @@ class AttractionDetailFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menuItemLocation -> {
-                val gmmIntentURI =
-                    Uri.parse("geo:${attraction.location.latitude},${attraction.location.longitude}?z=9&q=${attraction.title}")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentURI)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
+                val attraction = activityViewModel.selectedAttractionLiveData.value ?: return true
+                activityViewModel.locationSelectedLiveData.postValue(attraction)
                 true
             }
             else -> super.onOptionsItemSelected(item)

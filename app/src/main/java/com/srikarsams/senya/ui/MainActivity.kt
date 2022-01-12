@@ -1,7 +1,10 @@
 package com.srikarsams.senya.ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,15 +14,15 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.srikarsams.senya.R
+import com.srikarsams.senya.arch.AttractionsViewModel
 import com.srikarsams.senya.data.Attraction
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
-    val attractionsList: List<Attraction> by lazy {
-        parseAttractions()
-    }
+
+    val viewModel: AttractionsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,22 +34,19 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        viewModel.init(this)
+
+        viewModel.locationSelectedLiveData.observe(this) { attraction ->
+            val gmmIntentURI =
+                Uri.parse("geo:${attraction.location.latitude},${attraction.location.longitude}?z=9&q=${attraction.title}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentURI)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
-    }
-
-    private fun parseAttractions(): ArrayList<Attraction> {
-        val textFromFile =
-            resources.openRawResource(R.raw.croatia).bufferedReader().use { it.readText() }
-
-        val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-        val type = Types.newParameterizedType(
-            List::class.java,
-            Attraction::class.java
-        )
-        val adapter: JsonAdapter<List<Attraction>> = moshi.adapter(type)
-        return adapter.fromJson(textFromFile) as? ArrayList<Attraction> ?: ArrayList()
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.srikarsams.senya.R
 import com.srikarsams.senya.databinding.FragmentHomeBinding
 import com.srikarsams.senya.ui.fragment.BaseFragment
 
@@ -25,12 +26,15 @@ class HomeFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val adapter = HomeFragmentAdapter{ attractionId ->
-            val navDirections = HomeFragmentDirections.actionHomeFragmentToAttractionDetailFragment(attractionId)
-            navController.navigate(navDirections)
+            activityViewModel.onSelectedAttraction(attractionId)
+            navController.navigate(R.id.action_homeFragment_to_attractionDetailFragment)
         }
 
         binding.recyclerView.adapter = adapter
-        adapter.setData(attractions)
+
+        activityViewModel.attractionListLiveData.observe(viewLifecycleOwner) { attractions ->
+            adapter.setData(attractions)
+        }
     }
 
     override fun onDestroyView() {

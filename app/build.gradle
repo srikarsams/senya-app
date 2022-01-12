@@ -2,8 +2,11 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
 }
-
+kapt {
+    correctErrorTypes = true
+}
 android {
     compileSdk 31
 
@@ -53,4 +56,9 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     implementation 'com.squareup.moshi:moshi-kotlin:1.13.0'
+
+    def epoxyVersion = "4.6.4"
+    implementation "com.airbnb.android:epoxy:$epoxyVersion"
+    kapt("com.airbnb.android:epoxy-processor:$epoxyVersion")
+
 }

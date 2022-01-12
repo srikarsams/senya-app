@@ -20,12 +20,6 @@
         android:id="@+id/attractionDetailFragment"
         android:name="com.srikarsams.senya.ui.fragment.AttractionDetailFragment"
         android:label="Attraction Details"
-        tools:layout="@layout/fragment_attraction_detail">
-        <deepLink app:uri="https://www.senya.travel.com/attraction/{attractionId}" />
-        <argument
-            android:name="attractionId"
-            app:argType="string"
-            app:enterAnim="@anim/fragment_slide_in_right"
-            app:exitAnim="@anim/fragment_slide_out_left" />
-    </fragment>
+        tools:layout="@layout/fragment_attraction_detail" />
+
 </navigation>
